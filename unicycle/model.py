@@ -30,7 +30,7 @@ class Unicycle:
 
         self.rand_force = 0
         self.rand_force_t = 0.1
-        self.std_force = 0.5
+        self.std_force = 0.1
         self.last_rand_force_t = -1e10
 
     def model(self, y, t):
@@ -57,6 +57,10 @@ class Unicycle:
         p = y[0]
         dp = y[1]
         dx = y[2]
+
+        p_target = arctan(-(R**2*ux*dx)/(g*(R**2*m1+R**2*m2+I1)))
+
+        self.controller.update_setpoint(p_target)
 
         delayed_p = self.delayed_p(p)
 
