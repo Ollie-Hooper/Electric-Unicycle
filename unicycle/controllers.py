@@ -4,7 +4,7 @@ from simple_pid import PID as _PID
 
 class PID:
     def __init__(self):
-        self.pid = _PID(10, 0, 0, setpoint=0)
+        self.pid = _PID(10, 2, 0.3, setpoint=0) # pid = PID(Kp, Ki, Kd, setpoint=0)
         self.pid.output_limits = (-50, 50)
         self.setpoint = 0
 

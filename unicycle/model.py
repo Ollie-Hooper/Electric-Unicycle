@@ -8,10 +8,10 @@ class Unicycle:
     def __init__(self, timestep, controller, controller_sample_time=0.005, delay=0.005):
         self.timestep = timestep
 
-        self.wheel_mass = 3
+        self.wheel_mass = 2
         self.seatpost_mass = 0.5
         self.wheel_radius = 0.2
-        self.seatpost_length = 0.9
+        self.seatpost_length = 0.5
         self.seat_length = 0.2
         self.wheel_inertia = (1 / 2) * self.wheel_mass * (self.wheel_radius ** 2)
         self.seatpost_inertia = self.seatpost_mass * (self.seatpost_length ** 2)
@@ -88,7 +88,7 @@ class Unicycle:
                         m1 * (R ** 2) + I1 + m2 * (R ** 2)) * ((m2 ** 2) * (R ** 2) * (L ** 2) * (cos(p) ** 2))))
 
         # Constant speed - ignore d2x calculation
-        d2x = 0
+        # d2x = 0
 
         c = 0.2
 
