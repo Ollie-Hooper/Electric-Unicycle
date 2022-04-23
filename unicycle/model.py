@@ -99,7 +99,7 @@ class Unicycle:
 
         return dydt, M, F
 
-
+# Ring buffer stores a fixed number of elements and overwrites the oldest element when the buffer is full.
 class RingBuffer:
 
     def __init__(self, delay):
