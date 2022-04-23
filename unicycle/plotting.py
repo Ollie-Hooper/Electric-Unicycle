@@ -1,4 +1,4 @@
-import os
+import os, sys, subprocess
 
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
@@ -6,6 +6,13 @@ import numpy as np
 
 from numpy import sin, cos, pi, floor, ceil
 
+def open_file(filename):
+    if sys.platform == "win32":
+        
+        os.startfile(filename)
+    else:
+        opener ="open" if sys.platform == "darwin" else "xdg-open"
+        subprocess.call([opener, filename])
 
 def plot_chart(title, y, x, y_label, x_label):
     plt.plot(x, y)
@@ -34,8 +41,10 @@ def run_animation(y, x, unicycle, fps, length):
     # Saddle
     lin3 = axes.plot([], [], color="white", linewidth=5)
     # Ground
-    lin4 = axes.plot([], [], linestyle=(0, (1, 1)), color="green", linewidth=5)
-    lines = [lin1, lin2, lin3, lin4]
+    lin4 = axes.plot([], [], linestyle=(0, (4, 30)), color="brown", linewidth=5)
+    # Background Trees
+    lin5 = axes.plot([], [], color="red", linewidth=5)
+    lines = [lin1, lin2, lin3, lin4, lin5]
 
     def init():
         for line in lines:
@@ -92,15 +101,25 @@ def run_animation(y, x, unicycle, fps, length):
         x4 = [floor(new_xlim1), floor(new_xlim1) + ground_length + 1]
         y4 = [0, 0]
         lines[3][0].set_data(x4, y4)
+        # Render trees
+        # x5 = [floor(new_xlim1) + a * ground_length / 4 for a in range(4)]
+        for a in range(4):
+            x5 = [floor(new_xlim1) + a * ground_length / 4, floor(new_xlim1) + a * ground_length / 4]
+            y5 = [0, r]
+            # lines[4][0].set_data(x5, y5)
+        x5 = [floor(new_xlim1) + 1 * ground_length / 4 ] # was a
+        y5 = [0, 0]
+        lines[4][0].set_data(x5, y5)
 
         return lines
 
     anim = animation.FuncAnimation(fig, animate, frames=fps * length)
 
-    plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg.exe'
-
+    if sys.platform == "win32":
+        plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg.exe'
+    
     writer = animation.FFMpegWriter(fps=fps)
 
     anim.save('animation.mp4', writer=writer)
 
-    os.startfile('animation.mp4')
+    open_file('animation.mp4')
