@@ -12,7 +12,7 @@ from unicycle.solver import solve
 def main():
     y0 = np.array([radians(15), 0, 10])
     fps = 30
-    length = 30
+    length = 20
     t = np.linspace(0, length, length*1001)
     h = t[1] - t[0]
 
