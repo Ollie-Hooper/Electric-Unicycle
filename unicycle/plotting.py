@@ -35,6 +35,9 @@ def run_animation(y, x, unicycle, fps, length):
     plt.style.use('dark_background')
     plt.axis('off')
 
+    ground_length = 0.2
+    n_grnd_lines = int(ceil((og_xlim[1] - og_xlim[0])/ground_length))
+
     # Wheel
     lin1 = axes.plot([], [], color="white", linewidth=2.5)
     # SaddlePost
@@ -42,10 +45,10 @@ def run_animation(y, x, unicycle, fps, length):
     # Saddle
     lin3 = axes.plot([], [], color="white", linewidth=5)
     # Ground
-    lin4 = axes.plot([], [], linestyle=(0, (4, 8)), color="brown", linewidth=5)
+    grnd_lines = [axes.plot([], [], color="brown", linewidth=5) for i in range(n_grnd_lines)]
     # Background Trees
     lin5 = axes.plot([], [], color="red", linewidth=5)
-    lines = [lin1, lin2, lin3, lin4, lin5]
+    lines = [lin1, lin2, lin3, *grnd_lines, lin5]
 
     def init():
         for line in lines:
@@ -101,12 +104,15 @@ def run_animation(y, x, unicycle, fps, length):
             # fig.canvas.resize_event()
 
         new_xlim1, new_xlim2 = axes.get_xlim()
-        ground_length = (new_xlim2 - new_xlim1)
 
         # Render ground
-        x4 = [floor(new_xlim1), floor(new_xlim1) + ground_length + 1]
-        y4 = [0, 0]
-        lines[3][0].set_data(x4, y4)
+        for i, l in enumerate(grnd_lines):
+            j = i+3
+            start = floor(new_xlim1) + ground_length * (floor(new_xlim1)%2 + 2*i)
+            x_l = [start, start + ground_length]
+            y_l = [0,0]
+            lines[j][0].set_data(x_l, y_l)
+
         # Render trees
         # x5 = [floor(new_xlim1) + a * ground_length / 4 for a in range(4)]
         # for a in range(4):
