@@ -6,12 +6,14 @@ import numpy as np
 
 from numpy import sin, cos, pi, floor, ceil
 
+
 def open_file(filename):
     if sys.platform == "win32":
         os.startfile(filename)
     else:
-        opener ="open" if sys.platform == "darwin" else "xdg-open"
+        opener = "open" if sys.platform == "darwin" else "xdg-open"
         subprocess.call([opener, filename])
+
 
 def plot_chart(title, y, x, y_label, x_label):
     plt.plot(x, y)
@@ -36,7 +38,7 @@ def run_animation(y, x, unicycle, fps, length):
     plt.axis('off')
 
     ground_length = 0.2
-    n_grnd_lines = int(ceil((og_xlim[1] - og_xlim[0])/ground_length))
+    n_grnd_lines = int(ceil((og_xlim[1] - og_xlim[0]) / ground_length))
 
     # Wheel
     lin1 = axes.plot([], [], color="white", linewidth=2.5)
@@ -88,17 +90,17 @@ def run_animation(y, x, unicycle, fps, length):
         x_lim1 = raw_xlim1 + speed_lim
         x_lim2 = raw_xlim2 - speed_lim
 
-        max_x = max(*x1, *x2, *x3) + 1.5 # Add 0.5 to make sure the axis is not too small
-        min_x = min(*x1, *x2, *x3) - 1.5 
+        max_x = max(*x1, *x2, *x3) + 1.5  # Add 0.5 to make sure the axis is not too small
+        min_x = min(*x1, *x2, *x3) - 1.5
 
         # is this what makes it jump?
         if max_x > x_lim2:
-        # if max_x > x_lim2 and dx > 0:
+            # if max_x > x_lim2 and dx > 0:
             diff = max_x - x_lim2
             axes.set_xlim(raw_xlim1 + diff, raw_xlim2 + diff)
             # fig.canvas.resize_event()
         elif min_x < x_lim1:
-        # elif min_x < x_lim1 and dx < 0:
+            # elif min_x < x_lim1 and dx < 0:
             diff = abs(min_x - x_lim1)
             axes.set_xlim(raw_xlim1 - diff, raw_xlim2 - diff)
             # fig.canvas.resize_event()
@@ -107,10 +109,10 @@ def run_animation(y, x, unicycle, fps, length):
 
         # Render ground
         for i, l in enumerate(grnd_lines):
-            j = i+3
-            start = floor(new_xlim1) + ground_length * (floor(new_xlim1)%2 + 2*i)
+            j = i + 3
+            start = floor(new_xlim1) + ground_length * (floor(new_xlim1) % 2 + 2 * i)
             x_l = [start, start + ground_length]
-            y_l = [0,0]
+            y_l = [0, 0]
             lines[j][0].set_data(x_l, y_l)
 
         # Render trees
@@ -129,7 +131,7 @@ def run_animation(y, x, unicycle, fps, length):
 
     if sys.platform == "win32":
         plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg.exe'
-    
+
     writer = animation.FFMpegWriter(fps=fps, metadata=dict(artist='Group 8'), bitrate=1800)
 
     anim.save('animation.mp4', writer=writer)

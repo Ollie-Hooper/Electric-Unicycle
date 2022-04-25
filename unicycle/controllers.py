@@ -4,7 +4,7 @@ from simple_pid import PID as _PID
 
 class PID:
     def __init__(self):
-        self.pid = _PID(10, 2, 0.3, setpoint=0) # pid = PID(Kp, Ki, Kd, setpoint=0)
+        self.pid = _PID(10, 2, 0.3, setpoint=0)  # pid = PID(Kp, Ki, Kd, setpoint=0)
         self.pid.output_limits = (-50, 50)
         self.setpoint = 0
 
@@ -42,7 +42,7 @@ class Polynomial:
         x = args[0] - self.setpoint
         o = 0
         for n, c in enumerate(self.coeff):
-            o += c * x ** (n+1)
+            o += c * x ** (n + 1)
         return min(o, sign(o) * self.limit, key=abs)
 
     def update_setpoint(self, x):

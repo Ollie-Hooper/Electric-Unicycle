@@ -58,7 +58,7 @@ class Unicycle:
         dp = y[1]
         dx = y[2]
 
-        p_target = arctan(-(R**2*ux*dx)/(g*(R**2*m1+R**2*m2+I1))) # varies with dx
+        p_target = arctan(-(R ** 2 * ux * dx) / (g * (R ** 2 * m1 + R ** 2 * m2 + I1)))  # varies with dx
         self.controller.update_setpoint(p_target)
 
         delayed_p = self.delayed_p(p)
@@ -97,6 +97,7 @@ class Unicycle:
             dydt = [-sign(p) * (1 / self.timestep) * (abs(p) - p_max), -(1 / self.timestep) * dp * (1 + c), d2x]
 
         return dydt, M, F
+
 
 # Ring buffer stores a fixed number of elements and overwrites the oldest element when the buffer is full.
 class RingBuffer:
