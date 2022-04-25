@@ -11,8 +11,8 @@ from unicycle.solver import solve
 
 def main():
     y0 = np.array([radians(15), 0, 0.2]) # inital [theta, dtheta, dx]
-    fps = 30
-    length = 20
+    fps = 60
+    length = 30
     t = np.linspace(0, length, length*1001)
     h = t[1] - t[0]
 

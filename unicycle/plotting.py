@@ -29,6 +29,8 @@ def run_animation(y, x, unicycle, fps, length):
     fig, axes = plt.subplots(nrows=1, ncols=1, figsize=(15, 5))
     axes.set_ylim(0, 1.5)
     axes.set_xlim(-2.25, 2.25)
+    og_xlim = axes.get_xlim()
+    og_ylim = axes.get_ylim()
     # plt.style.use("ggplot")
     plt.style.use('dark_background')
     plt.axis('off')
@@ -40,7 +42,7 @@ def run_animation(y, x, unicycle, fps, length):
     # Saddle
     lin3 = axes.plot([], [], color="white", linewidth=5)
     # Ground
-    lin4 = axes.plot([], [], linestyle=(0, (4, 30)), color="brown", linewidth=5)
+    lin4 = axes.plot([], [], linestyle=(0, (4, 8)), color="brown", linewidth=5)
     # Background Trees
     lin5 = axes.plot([], [], color="red", linewidth=5)
     lines = [lin1, lin2, lin3, lin4, lin5]
@@ -83,18 +85,23 @@ def run_animation(y, x, unicycle, fps, length):
         x_lim1 = raw_xlim1 + speed_lim
         x_lim2 = raw_xlim2 - speed_lim
 
-        max_x = max(*x1, *x2, *x3)
-        min_x = min(*x1, *x2, *x3)
+        max_x = max(*x1, *x2, *x3) + 1.5 # Add 0.5 to make sure the axis is not too small
+        min_x = min(*x1, *x2, *x3) - 1.5 
 
-        if max_x > x_lim2 and dx > 0:
+        # is this what makes it jump?
+        if max_x > x_lim2:
+        # if max_x > x_lim2 and dx > 0:
             diff = max_x - x_lim2
             axes.set_xlim(raw_xlim1 + diff, raw_xlim2 + diff)
-        elif min_x < x_lim1 and dx < 0:
+            # fig.canvas.resize_event()
+        elif min_x < x_lim1:
+        # elif min_x < x_lim1 and dx < 0:
             diff = abs(min_x - x_lim1)
             axes.set_xlim(raw_xlim1 - diff, raw_xlim2 - diff)
+            # fig.canvas.resize_event()
 
         new_xlim1, new_xlim2 = axes.get_xlim()
-        ground_length = new_xlim2 - new_xlim1
+        ground_length = (new_xlim2 - new_xlim1)
 
         # Render ground
         x4 = [floor(new_xlim1), floor(new_xlim1) + ground_length + 1]
@@ -102,22 +109,22 @@ def run_animation(y, x, unicycle, fps, length):
         lines[3][0].set_data(x4, y4)
         # Render trees
         # x5 = [floor(new_xlim1) + a * ground_length / 4 for a in range(4)]
-        for a in range(4):
-            x5 = [floor(new_xlim1) + a * ground_length / 4, floor(new_xlim1) + a * ground_length / 4]
-            y5 = [0, r]
-            # lines[4][0].set_data(x5, y5)
-        x5 = [floor(new_xlim1) + 1 * ground_length / 4 ] # was a
-        y5 = [0, 0]
-        lines[4][0].set_data(x5, y5)
+        # for a in range(4):
+        #     x5 = [floor(new_xlim1) + a * ground_length / 4, floor(new_xlim1) + a * ground_length / 4]
+        #     y5 = [0, r]
+        #     # lines[4][0].set_data(x5, y5)
+        # x5 = [floor(new_xlim1) + 1 * ground_length / 4 ] # was a
+        # y5 = [0, 0]
+        # lines[4][0].set_data(x5, y5)
 
         return lines
 
-    anim = animation.FuncAnimation(fig, animate, frames=fps * length)
+    anim = animation.FuncAnimation(fig, animate, frames=fps * length, blit=False)
 
     if sys.platform == "win32":
         plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg.exe'
     
-    writer = animation.FFMpegWriter(fps=fps)
+    writer = animation.FFMpegWriter(fps=fps, metadata=dict(artist='Group 8'), bitrate=1800)
 
     anim.save('animation.mp4', writer=writer)
 

@@ -9,7 +9,7 @@ class Unicycle:
         self.timestep = timestep
 
         self.wheel_mass = 2
-        self.seatpost_mass = 0.5
+        self.seatpost_mass = 0.4
         self.wheel_radius = 0.2
         self.seatpost_length = 0.5
         self.seat_length = 0.2
@@ -58,8 +58,7 @@ class Unicycle:
         dp = y[1]
         dx = y[2]
 
-        p_target = arctan(-(R**2*ux*dx)/(g*(R**2*m1+R**2*m2+I1)))
-
+        p_target = arctan(-(R**2*ux*dx)/(g*(R**2*m1+R**2*m2+I1))) # varies with dx
         self.controller.update_setpoint(p_target)
 
         delayed_p = self.delayed_p(p)
