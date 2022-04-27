@@ -46,6 +46,7 @@ class Unicycle:
         g = self.g
 
         if t - self.last_rand_force_t > self.rand_force_t:
+            np.random.seed(int(t*1000))
             F = np.random.normal(0, self.std_force)
             self.rand_force = F
             self.last_rand_force_t = t
