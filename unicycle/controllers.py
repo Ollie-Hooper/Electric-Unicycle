@@ -16,6 +16,21 @@ class PID:
         self.pid.setpoint = self.setpoint
 
 
+class Linear:
+    def __init__(self, coeff=-20, max_torque=50):
+        self.coeff = coeff
+        self.limit = max_torque
+        self.setpoint = 0
+
+    def __call__(self, *args, **kwargs):
+        x = args[0] - self.setpoint
+        o = self.coeff*x
+        return min(o, sign(o) * self.limit, key=abs)
+
+    def update_setpoint(self, x):
+        self.setpoint = x
+
+
 class Exponential:
     def __init__(self, k=-10, n=2, max_torque=50):
         self.k = k
