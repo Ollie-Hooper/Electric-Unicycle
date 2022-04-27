@@ -10,7 +10,7 @@ from unicycle.solver import solve
 
 
 def main():
-    y0 = np.array([radians(5), 0, 1])  # inital [theta, dtheta, dx]
+    y0 = np.array([radians(5), 0, 2])  # initial [theta, dtheta, dx]
     fps = 60
     length = 30
     t = np.linspace(0, length, length * 1001)
@@ -21,9 +21,9 @@ def main():
     e = Exponential()
     p = Polynomial()
 
-    controller = l
+    controller = p
 
-    unicycle = Unicycle(h, controller)
+    unicycle = Unicycle(h, controller, y0[2])
 
     y, M, F = solve(unicycle.model, y0, t)
     x = (h * y[:, 2]).cumsum()

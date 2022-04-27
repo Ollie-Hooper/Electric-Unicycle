@@ -5,7 +5,7 @@ from numpy import sin, cos, arccos, arctan, pi, sign, sqrt
 
 class Unicycle:
 
-    def __init__(self, timestep, controller, controller_sample_time=0.005, delay=0.005):
+    def __init__(self, timestep, controller, target_speed, controller_sample_time=0.02, delay=0.005):
         self.timestep = timestep
 
         self.wheel_mass = 2
@@ -20,6 +20,8 @@ class Unicycle:
         self.g = -9.81
 
         self.controller = controller
+
+        self.target_speed = target_speed
 
         self.controller_sample_time = controller_sample_time
         self.delay = delay
@@ -59,7 +61,10 @@ class Unicycle:
         dp = y[1]
         dx = y[2]
 
-        p_target = arctan(-(R ** 2 * ux * dx) / (g * (R ** 2 * m1 + R ** 2 * m2 + I1)))  # varies with dx
+        if not self.target_speed:
+            p_target = arctan(-(R ** 2 * ux * dx) / (g * (R ** 2 * m1 + R ** 2 * m2 + I1)))  # varies with dx
+        else:
+            p_target = arctan(-(R ** 2 * ux * self.target_speed) / (g * (R ** 2 * m1 + R ** 2 * m2 + I1)))  # varies with dx
         self.controller.update_setpoint(p_target)
 
         delayed_p = self.delayed_p(p)
