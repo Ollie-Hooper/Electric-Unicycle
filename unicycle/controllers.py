@@ -4,6 +4,7 @@ from simple_pid import PID as _PID
 
 class PID:
     def __init__(self):
+        self.name = 'PID'
         self.pid = _PID(10, 2, 0.3, setpoint=0)  # pid = PID(Kp, Ki, Kd, setpoint=0)
         self.pid.output_limits = (-50, 50)
         self.setpoint = 0
@@ -18,6 +19,7 @@ class PID:
 
 class Linear:
     def __init__(self, coeff=-20, max_torque=50):
+        self.name = 'Linear'
         self.coeff = coeff
         self.limit = max_torque
         self.setpoint = 0
@@ -33,6 +35,7 @@ class Linear:
 
 class Exponential:
     def __init__(self, k=-10, n=2, max_torque=50):
+        self.name = 'Exponential'
         self.k = k
         self.n = n
         self.limit = max_torque
@@ -49,6 +52,7 @@ class Exponential:
 
 class Polynomial:
     def __init__(self, coeff=(-15, 0, -10), max_torque=50):
+        self.name = 'Polynomial'
         self.coeff = coeff
         self.limit = max_torque
         self.setpoint = 0

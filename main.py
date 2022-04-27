@@ -21,14 +21,16 @@ def main():
     e = Exponential()
     p = Polynomial()
 
-    unicycle = Unicycle(h, l)
+    controller = l
+
+    unicycle = Unicycle(h, controller)
 
     y, M, F = solve(unicycle.model, y0, t)
     x = (h * y[:, 2]).cumsum()
 
-    plot_chart("Seatpost angle", degrees(y[:, 0]), t, 'phi (degrees)', 'time (s)')
-    plot_chart("Velocity of unicycle", y[:, 2], t, 'v (m/s)', 'time (s)')
-    plot_chart("Controller torque", M, t, 'tau (Nm)', 'time (s)')
+    plot_chart(f"Seatpost angle - {controller.name} controller", degrees(y[:, 0]), t, 'phi (degrees)', 'time (s)')
+    plot_chart(f"Velocity of unicycle - {controller.name} controller", y[:, 2], t, 'v (m/s)', 'time (s)')
+    plot_chart(f"{controller.name} controller torque", M, t, 'tau (Nm)', 'time (s)')
     plot_chart("Random pertubations", F, t, 'force (N)', 'time (s)')
 
     run_animation(y, x, unicycle, fps, length)
